@@ -1,0 +1,23 @@
+## Package: uplift
+Package uplift by Guelman (https://github.com/cran/uplift).  This package splits into quantiles, but can have issues finding splits when distributions have peaks:
+
+```{r}
+library(grf)
+library(ggplot2)
+library(tweedie)
+library(uplifteval)
+
+#
+# Case: plot_uplift_guelman fails to find quantiles
+#
+# Generate equal prediction distributions
+n <- 1000
+W <- rbinom(n, 1, 0.5)
+Y <- rbinom(n, 1, 0.5)
+p1 <- rtweedie(n, xi=1.4, mu=1, phi=1)
+hist(p1,100)
+
+plot_uplift_guelman(p1, W, Y, groups=10)
+
+
+```
