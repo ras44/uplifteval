@@ -1,7 +1,7 @@
 # uplifteval
 
 ## Description
-`uplifteval` provides a variety of plots and metrics to evaluate the predictions of uplift models for both binary and continuous outcomes.
+`uplifteval` provides a variety of plots and metrics to evaluate the predictions of uplift models for both binary and continuous outcomes.  Naming conventions are somewhat inconsistent due to the mix of packages that have been ported into this package.
 
 Included with the package are:
 
