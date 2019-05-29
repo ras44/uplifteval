@@ -8,6 +8,7 @@
 #'   the control case)
 #' @param W binary vector {1,0} of treatment assignments
 #' @param Y numeric vector of responses
+#' @param ns integer number of samples per bootstrap iteration; default min(table(W))
 #' @param n_bs integer number of bootstrap iterations
 #' @param W_label optional labels for the treatment options (default W)
 #' @param p0 optional numeric vector of predicted outcomes for control case
@@ -16,12 +17,30 @@
 #' @param replace optional boolean whether to use replacement when sampling;
 #'   default TRUE
 #' @param x_interval optional numeric the interval with which to split the
+#' @param ... additional arguments (unused)
 #'   x-axis
 #'
-#' @import dplyr ggplot2 gridExtra whisker
+#' @import ggplot2 graphics
+#' @importFrom dplyr %>%
 #'
+#' @examples \dontrun{
+#'
+#' set.seed(123)
+#'
+#' rl <- function(x){
+#'   round(1/(1+exp(-x)))
+#' }
+#' n = 2000; p = 10
+#' X = matrix(rnorm(n*p), n, p)
+#' W = rbinom(n, 1, 0.2)
+#' Y = rl(rl(X[,1]) * W - rl(X[,3]) * W + rnorm(n))
+#' tau.forest = causal_forest(X, Y, W)
+#' tau.hat = predict(tau.forest, X)
+#' plot_uplift(tau.hat$predictions, W, Y, n_bs=20, x_interval = 0.05, balanced = FALSE)
+#' plot_uplift(tau.hat$predictions, W, Y, n_bs=20, x_interval = 0.05, balanced = TRUE)
+#'
+#' }
 #' @export
-
 
 plot_uplift <- function(p1,
                         W,
@@ -32,7 +51,8 @@ plot_uplift <- function(p1,
                         p0=rep(0,length(p1)),
                         balanced = TRUE,
                         replace = TRUE,
-                        x_interval = 0.1
+                        x_interval = 0.1,
+                        ...
                         ){
 
   q_pred_t <- c()
@@ -44,7 +64,6 @@ plot_uplift <- function(p1,
 
   if(balanced){
     for(i in c(1:n_bs)){
-      print(paste0("boostrap iter: ", i))
       inds_t0 <- sample(seq_along(W)[W==0],ns, replace = replace)
       inds_t1 <- sample(seq_along(W)[W==1],ns, replace = replace)
       q_pred_t <- c(q_pred_t, c(p1[inds_t0],p1[inds_t1]))
@@ -86,15 +105,14 @@ plot_uplift <- function(p1,
   mmo <- cbind(mmo, cdr = cumsum(mmo[,'y']*mmo[,'ct']))
   # show cumsum(dr) for individual bootstrap iterations
   mmo_df <- as.data.frame(mmo)
-  head(mmo)
 
   mmo_df <- mmo_df %>%
-    group_by(i) %>%
-    arrange(-dif.pred) %>% mutate(cdri = cumsum(y*ct))
+    dplyr::group_by(i) %>%
+    dplyr::arrange(-dif.pred) %>% dplyr::mutate(cdri = cumsum(y*ct))
 
   # Plot mean with min/max error bars, quantizing scoring (q = 10^x)
   q <- 1/x_interval
-  mmo_dfs <- mmo_df %>% group_by(dif.pred = floor(dif.pred*q)/q) %>%
+  mmo_dfs <- mmo_df %>% dplyr::group_by(dif.pred = floor(dif.pred*q)/q) %>%
     dplyr::summarize(min_cdri = min(cdri),
                      sd_cdri = sd(cdri),
                      max_cdri = max(cdri),
@@ -157,6 +175,6 @@ plot_uplift <- function(p1,
     scale_x_reverse() +
     theme(legend.position = c(0.9, 0.8))
 
-  grid.arrange(p1, p2, nrow=2)
+  gridExtra::grid.arrange(p1, p2, nrow=2)
 
 }

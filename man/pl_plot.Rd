@@ -18,26 +18,56 @@ pl_plot(plue, plot_type = "cgains", n_bins = 20,
 cumulative uplift plot. 'balance' gives the test-control balance
 for each of the bins. All others are self-explanatory.}
 
-\item{show_practical_max}{: boolean, optional
+\item{n_bins}{integer, number of population bins; default 20}
+
+\item{show_theoretical_max}{boolean, optional
+Toggle theoretical maximal qini curve, if overfitting to
+treatment/control. Only works for Qini-style curves.}
+
+\item{show_practical_max}{boolean, optional
 Toggle theoretical maximal qini curve, if not overfitting to
 treatment/control. Only works for Qini-style curves.}
 
-\item{show_no_dogs}{: boolean, optional
+\item{show_random_selection}{boolean, optional
+Toggle straight line indicating a random ordering. Only works for
+Qini-style curves.}
+
+\item{show_no_dogs}{boolean, optional
 Toggle theoretical maximal qini curve, if you believe there are no
 sleeping dogs. Only works for Qini-style curves.}
 
 \item{...}{additional arguments}
-
-\item{show_theoretical_max:}{boolean, optional
-Toggle theoretical maximal qini curve, if overfitting to
-treatment/control. Only works for Qini-style curves.}
-
-\item{show_random_selection:}{boolean, optional
-Toggle straight line indicating a random ordering. Only works for
-Qini-style curves.}
+}
+\value{
+a pylift plot
 }
 \description{
 A port of pylift's plot function (https://github.com/wayfair/pylift) as of commit:
 https://github.com/wayfair/pylift/tree/bb69692388b1fe085001c3ba7edf6dd81d888353
 pylift: Plots the different kinds of percentage-targeted curves.
+}
+\examples{
+\dontrun{
+
+
+set.seed(123)
+
+rl <- function(x){
+  round(1/(1+exp(-x)))
+}
+n = 2000; p = 10
+X = matrix(rnorm(n*p), n, p)
+W = rbinom(n, 1, 0.2)
+Y = rl(rl(X[,1]) * W - rl(X[,3]) * W + rnorm(n))
+tau.forest = causal_forest(X, Y, W)
+tau.hat = predict(tau.forest, X)
+plue = plUpliftEval(W, Y, tau.hat$predictions)
+plue
+pl_plot(plue,
+        show_practical_max = TRUE,
+        show_theoretical_max = TRUE,
+        show_no_dogs = TRUE,
+        n_bins=20)
+}
+
 }

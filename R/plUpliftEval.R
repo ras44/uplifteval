@@ -3,7 +3,7 @@ PLOT_TYPES = c('qini', 'aqini', 'cgains', 'cuplift', 'uplift', 'balance')
 
 
 #' A non-S3 "constructor" function that returns a list representing a pylift uplift
-#' eval object, PlUpliftEval.  This object is used to generate plots.
+#' eval object, PlUpliftEval.  This object contains metrics and can be used to generate plots.
 #'
 #' @param treatment numeric vector of treatment identifiers
 #' @param outcome numeric vector of outcomes
@@ -11,6 +11,7 @@ PLOT_TYPES = c('qini', 'aqini', 'cgains', 'cuplift', 'uplift', 'balance')
 #' @param p optional "infer", numeric, numeric vector representing treatment
 #'   propensities
 #' @param n_bins integer number of bins on x-axis; default 20
+#' @return a list representing a pylift uplift eval object
 #'
 #' @export
 new_PlUpliftEval <- function(treatment = integer(),
@@ -65,6 +66,24 @@ new_PlUpliftEval <- function(treatment = integer(),
 #' @param p optional "infer", numeric, numeric vector representing treatment
 #'   propensities
 #' @param n_bins integer number of bins on x-axis; default 20
+#' @return a list representing a pylift uplift eval object
+#'
+#' @examples \dontrun{
+#' library(grf)
+#' set.seed(123)
+#'
+#' rl <- function(x){
+#'   round(1/(1+exp(-x)))
+#' }
+#' n = 2000; p = 10
+#' X = matrix(rnorm(n*p), n, p)
+#' W = rbinom(n, 1, 0.2)
+#' Y = rl(rl(X[,1]) * W - rl(X[,3]) * W + rnorm(n))
+#' tau.forest = causal_forest(X, Y, W)
+#' tau.hat = predict(tau.forest, X)
+#' plue = plUpliftEval(W, Y, tau.hat$predictions)
+#' plue
+#' }
 #'
 #' @export
 plUpliftEval <- function(treatment, outcome, prediction, p = "infer", n_bins = 20){
@@ -184,24 +203,46 @@ pl_calc <- function(self, plot_type, n_bins=20){
 #'     'aqini' refers to an adjusted qini plot, 'cuplift' gives a
 #'     cumulative uplift plot. 'balance' gives the test-control balance
 #'     for each of the bins. All others are self-explanatory.
-#' @param show_theoretical_max: boolean, optional
+#' @param n_bins integer, number of population bins; default 20
+#' @param show_theoretical_max boolean, optional
 #'     Toggle theoretical maximal qini curve, if overfitting to
 #'     treatment/control. Only works for Qini-style curves.
-#' @param show_practical_max : boolean, optional
+#' @param show_practical_max boolean, optional
 #'     Toggle theoretical maximal qini curve, if not overfitting to
 #'     treatment/control. Only works for Qini-style curves.
-#' @param show_no_dogs : boolean, optional
+#' @param show_no_dogs boolean, optional
 #'     Toggle theoretical maximal qini curve, if you believe there are no
 #'     sleeping dogs. Only works for Qini-style curves.
-#' @param show_random_selection: boolean, optional
+#' @param show_random_selection boolean, optional
 #'     Toggle straight line indicating a random ordering. Only works for
 #'     Qini-style curves.
 #' @param ... additional arguments
+#' @return a pylift plot
 #'
-#' @import ggplot2
+#' @examples \dontrun{
+#'
+#'
+#' set.seed(123)
+#'
+#' rl <- function(x){
+#'   round(1/(1+exp(-x)))
+#' }
+#' n = 2000; p = 10
+#' X = matrix(rnorm(n*p), n, p)
+#' W = rbinom(n, 1, 0.2)
+#' Y = rl(rl(X[,1]) * W - rl(X[,3]) * W + rnorm(n))
+#' tau.forest = causal_forest(X, Y, W)
+#' tau.hat = predict(tau.forest, X)
+#' plue = plUpliftEval(W, Y, tau.hat$predictions)
+#' plue
+#' pl_plot(plue,
+#'         show_practical_max = TRUE,
+#'         show_theoretical_max = TRUE,
+#'         show_no_dogs = TRUE,
+#'         n_bins=20)
+#' }
 #'
 #' @export
-
 
 pl_plot <- function(plue,
                     plot_type='cgains',

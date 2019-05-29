@@ -15,8 +15,13 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    grf
+    grf,
+    tweedie,
+    qpdf
 Depends: R (>= 3.0.0),
-  ggplot2,
-  whisker
+Imports: ggplot2,
+  whisker,
+  gridExtra,
+  dplyr
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr

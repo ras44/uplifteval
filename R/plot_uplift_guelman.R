@@ -11,7 +11,32 @@
 #' @param direction 1: calculate the differential response as p1-p0, 2: p0-p1
 #' @param groups 5, 10, or 20: the number of quantiles in which to divide the population
 #'
+#' @import stats
 #'
+#' @examples \dontrun{
+#'
+#' set.seed(123)
+#'
+#' alpha <- 0.1
+#' n <- 1000
+#' W <- rbinom(n, 1, 0.5)
+#' Y <- W
+#' p1 <- Y + alpha*rnorm(n)
+#' plot_uplift_guelman(p1, W, Y, groups=10)
+#'
+#'
+#' rl <- function(x){
+#'   round(1/(1+exp(-x)))
+#' }
+#' n = 2000; p = 10
+#' X = matrix(rnorm(n*p), n, p)
+#' W = rbinom(n, 1, 0.2)
+#' Y = rl(rl(X[,1]) * W - rl(X[,3]) * W + rnorm(n))
+#' tau.forest = causal_forest(X, Y, W)
+#' tau.hat = predict(tau.forest, X)
+#' plot_uplift_guelman(tau.hat$predictions, W, Y)
+#'
+#' }
 #' @export
 
 plot_uplift_guelman <- function(p1,

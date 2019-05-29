@@ -9,7 +9,7 @@ range.}
 \usage{
 plot_uplift(p1, W, Y, ns = min(table(W)), n_bs = 1, W_label = W,
   p0 = rep(0, length(p1)), balanced = TRUE, replace = TRUE,
-  x_interval = 0.1)
+  x_interval = 0.1, ...)
 }
 \arguments{
 \item{p1}{numeric vector of uplift predictions; can also be predicted outcomes
@@ -19,6 +19,8 @@ the control case)}
 \item{W}{binary vector {1,0} of treatment assignments}
 
 \item{Y}{numeric vector of responses}
+
+\item{ns}{integer number of samples per bootstrap iteration; default min(table(W))}
 
 \item{n_bs}{integer number of bootstrap iterations}
 
@@ -32,7 +34,9 @@ treatment and control cases; default TRUE}
 \item{replace}{optional boolean whether to use replacement when sampling;
 default TRUE}
 
-\item{x_interval}{optional numeric the interval with which to split the
+\item{x_interval}{optional numeric the interval with which to split the}
+
+\item{...}{additional arguments (unused)
 x-axis}
 }
 \description{
@@ -40,4 +44,23 @@ Creates an uplift plot of cumulative differential treatment/control outcomes
 versus model score.  Also provides a selection of metrics: max uplift as pct
 of total control outcome, optimum users targeted and optimum score targeting
 range.
+}
+\examples{
+\dontrun{
+
+set.seed(123)
+
+rl <- function(x){
+  round(1/(1+exp(-x)))
+}
+n = 2000; p = 10
+X = matrix(rnorm(n*p), n, p)
+W = rbinom(n, 1, 0.2)
+Y = rl(rl(X[,1]) * W - rl(X[,3]) * W + rnorm(n))
+tau.forest = causal_forest(X, Y, W)
+tau.hat = predict(tau.forest, X)
+plot_uplift(tau.hat$predictions, W, Y, n_bs=20, x_interval = 0.05, balanced = FALSE)
+plot_uplift(tau.hat$predictions, W, Y, n_bs=20, x_interval = 0.05, balanced = TRUE)
+
+}
 }

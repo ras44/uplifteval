@@ -19,7 +19,29 @@ propensities}
 
 \item{n_bins}{integer number of bins on x-axis; default 20}
 }
+\value{
+a list representing a pylift uplift eval object
+}
 \description{
 A helper for the new_PlUpliftEval function that validates the treatment,
 outcome, prediction, p, and n_bins arguments.
+}
+\examples{
+\dontrun{
+library(grf)
+set.seed(123)
+
+rl <- function(x){
+  round(1/(1+exp(-x)))
+}
+n = 2000; p = 10
+X = matrix(rnorm(n*p), n, p)
+W = rbinom(n, 1, 0.2)
+Y = rl(rl(X[,1]) * W - rl(X[,3]) * W + rnorm(n))
+tau.forest = causal_forest(X, Y, W)
+tau.hat = predict(tau.forest, X)
+plue = plUpliftEval(W, Y, tau.hat$predictions)
+plue
+}
+
 }

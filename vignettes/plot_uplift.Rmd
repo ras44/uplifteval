@@ -1,8 +1,8 @@
 ---
-title: "pl_plot: port of python pylift module"
+title: "plot_uplift: bootstrap sampled uplift plots for continuous outcomes"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{pl_plot}
+  %\VignetteIndexEntry{plot_uplift}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,12 +18,7 @@ library(uplifteval)
 rl <- function(x){
   round(1/(1+exp(-x)))
 }
-```
 
-
-#  Examples with outcomes in {0,1}
-
-```{r}
 
 # Generate feature data
 set.seed(123)
@@ -31,7 +26,15 @@ n = 2000; p = 10
 X = matrix(rnorm(n*p), n, p)
 X.test = matrix(rnorm(n*p), n, p)
 
+```
 
+
+#  Examples with outcomes in {0,1}
+
+```{r}
+library(grf)
+library(ggplot2)
+library(uplifteval)
 
 #
 # Case 1: randomized control trial, treatment propensity is feature independent and equal
@@ -47,16 +50,14 @@ Y.test = rl(rl(X.test[,1]) * W.test - rl(X.test[,3]) * W.test + rnorm(n))
 tau.forest = causal_forest(X, Y, W)
 tau.hat = predict(tau.forest, X.test)
 
-plue = plUpliftEval(W.test, Y.test, tau.hat$predictions)
+plot_uplift(tau.hat$predictions, W.test, Y.test)
 
-pl_plot(plue,
-        show_practical_max = TRUE,
-        show_theoretical_max = TRUE,
-        show_no_dogs = TRUE,
-        n_bins=20)
+```
 
-plue$scores
 
+
+
+```{r}
 #
 # Case 2: randomized control trial, treatment propensity is feature independent but unequal
 # for treatment and control cases, 80-20
@@ -75,11 +76,27 @@ tau.forest = causal_forest(X, Y, W)
 tau.hat = predict(tau.forest, X.test)
 
 
-pl_plot(plUpliftEval(W.test, Y.test, tau.hat$predictions),
-        show_practical_max = TRUE,
-        show_theoretical_max = TRUE,
-        show_no_dogs = TRUE,
-        n_bins=20)
+plot_uplift(tau.hat$predictions, W.test, Y.test)
 
 ```
+
+
+#  Examples with continuous outcomes
+
+```{r}
+# Treatment/Response Train/Test
+set.seed(123)
+W = rbinom(n, 1, 0.8)
+W.test = rbinom(n, 1, 0.8)
+Y = X[,1] * W - X[,3] * W + rnorm(n)
+Y.test = X.test[,1] * W.test - X.test[,3] * W.test + rnorm(n)
+
+tau.forest = causal_forest(X, Y, W)
+tau.hat = predict(tau.forest, X.test)
+
+
+plot_uplift(tau.hat$predictions, W.test, Y.test, n_bs = 10)
+
+```
+
 

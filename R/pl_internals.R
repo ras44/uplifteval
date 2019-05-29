@@ -151,15 +151,15 @@ get_scores <- function(treatment, outcome, prediction, p, scoring_range=c(0,1), 
   N = counts$N
 
   riemann <- function(xy){
-    x = xy$x
-    y = xy$y
+    x <- xy$x
+    y <- xy$y
     stopifnot(length(x)==length(y))
-    xi = head(x, length(x)-1)
-    xip1 = tail(x,length(x)-1)
-    yi = head(y,length(y)-1)
-    yip1 = tail(y, length(y)-1)
-    avgy = (yi+yip1)/2
-    dx = (xip1-xi)
+    xi <- utils::head(x, length(x)-1)
+    xip1 <- utils::tail(x,length(x)-1)
+    yi <- utils::head(y,length(y)-1)
+    yip1 <- utils::tail(y, length(y)-1)
+    avgy <- (yi+yip1)/2
+    dx <- (xip1-xi)
     sum(avgy*dx)
   }
 
