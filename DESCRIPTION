@@ -1,11 +1,14 @@
 Package: uplifteval
 Type: Package
-Title: Uplift model evaluation with plots and metrics (inc. qini and gains)
+Title: Uplift Model Evaluation with Plots and Metrics
 Version: 0.1.0
 Author: Roland Stevenson
 Maintainer: Roland Stevenson <roland@rmg-services.com>
 Description: Provides a variety of plots and metrics to evaluate
-    uplift models.
+    uplift models including the R 'uplift' package's Qini metric and Qini plot,
+    a port of the python 'pylift' module's plotting function, and
+    an alternative plot (in beta) useful for continuous outcomes.
+    Background: Radcliffe (2007)<https://pdfs.semanticscholar.org/147b/32f3d56566c8654a9999c5477dded233328e.pdf>
 License: GPL-3
 URL: https://github.com/ras44/uplifteval
 BugReports: https://github.com/ras44/uplifteval/issues
