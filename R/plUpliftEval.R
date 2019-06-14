@@ -68,7 +68,7 @@ new_PlUpliftEval <- function(treatment = integer(),
 #' @param n_bins integer number of bins on x-axis; default 20
 #' @return a list representing a pylift uplift eval object
 #'
-#' @examples \dontrun{
+#' @examples \donttest{
 #' library(grf)
 #' set.seed(123)
 #'
@@ -219,7 +219,7 @@ pl_calc <- function(self, plot_type, n_bins=20){
 #' @param ... additional arguments
 #' @return a pylift plot
 #'
-#' @examples \dontrun{
+#' @examples \donttest{
 #'
 #'
 #' set.seed(123)

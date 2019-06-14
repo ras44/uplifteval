@@ -27,7 +27,7 @@ A helper for the new_PlUpliftEval function that validates the treatment,
 outcome, prediction, p, and n_bins arguments.
 }
 \examples{
-\dontrun{
+\donttest{
 library(grf)
 set.seed(123)
 

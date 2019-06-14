@@ -47,7 +47,7 @@ https://github.com/wayfair/pylift/tree/bb69692388b1fe085001c3ba7edf6dd81d888353
 pylift: Plots the different kinds of percentage-targeted curves.
 }
 \examples{
-\dontrun{
+\donttest{
 
 
 set.seed(123)

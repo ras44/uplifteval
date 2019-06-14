@@ -23,7 +23,7 @@
 #' @import ggplot2 graphics
 #' @importFrom dplyr %>%
 #'
-#' @examples \dontrun{
+#' @examples \donttest{
 #'
 #' set.seed(123)
 #'

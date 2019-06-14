@@ -13,7 +13,7 @@
 #'
 #' @import stats
 #'
-#' @examples \dontrun{
+#' @examples \donttest{
 #'
 #' set.seed(123)
 #'

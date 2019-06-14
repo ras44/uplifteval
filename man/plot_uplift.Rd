@@ -46,7 +46,7 @@ of total control outcome, optimum users targeted and optimum score targeting
 range.
 }
 \examples{
-\dontrun{
+\donttest{
 
 set.seed(123)
 

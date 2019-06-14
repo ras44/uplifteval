@@ -32,7 +32,7 @@ available in the R uplift package at commit
 https://github.com/cran/uplift/blob/95965272e71c312623c95c439fb0b84f95c185b7/R/qini.R#L5
 }
 \examples{
-\dontrun{
+\donttest{
 
 set.seed(123)
 
