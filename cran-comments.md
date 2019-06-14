@@ -1,6 +1,12 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
+* Replaced dontrun with donttest.
+
+
+## Resubmission
+This is a resubmission. In this version I have:
+
 * Use only undirected quotation marks ('python pylift') in
 Description text.
 
