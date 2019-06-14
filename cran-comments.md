@@ -1,6 +1,16 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
+* Put software names in single quotes ('python pylift').
+
+* Added 'library(grf)' to donttest examples.
+
+* Added additional examples.
+
+
+## Resubmission
+This is a resubmission. In this version I have:
+
 * Replaced dontrun with donttest.
 
 
