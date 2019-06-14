@@ -23,8 +23,33 @@
 #' @import ggplot2 graphics
 #' @importFrom dplyr %>%
 #'
-#' @examples \donttest{
+#' @examples
 #'
+#' set.seed(0)
+#' rl <- function(x){
+#'   round(1/(1+exp(-x)))
+#' }
+#' n <- 2000; p <- 3
+#' beta <- -0.5
+#' X <- matrix(rnorm(n*p), n, p)
+#' W <- rbinom(n, 1, 0.5)
+#' Y <- rl(pmax(beta+X[,1], 0) * W + X[,2])
+#' p1 <- 1/(1+exp(-(beta+X[,1])))
+#' plot_uplift(p1, W, Y, n_bs=20, x_interval = 0.05, balanced = TRUE)
+#'
+#'
+#' set.seed(0)
+#' n <- 2000; p <- 3
+#' beta <- -0.5
+#' X <- matrix(rnorm(n*p), n, p)
+#' W <- rbinom(n, 1, 0.5)
+#' Y <- pmax(beta+X[,1], 0) * W + X[,2]
+#' p1 <- 1/(1+exp(-(beta+X[,1])))
+#' plot_uplift(p1, W, Y, n_bs=20, x_interval = 0.05, balanced = TRUE)
+#'
+#'
+#' \donttest{
+#' library(grf)
 #' set.seed(123)
 #'
 #' rl <- function(x){

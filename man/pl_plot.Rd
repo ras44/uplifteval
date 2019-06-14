@@ -47,21 +47,38 @@ https://github.com/wayfair/pylift/tree/bb69692388b1fe085001c3ba7edf6dd81d888353
 pylift: Plots the different kinds of percentage-targeted curves.
 }
 \examples{
+
+set.seed(0)
+rl <- function(x){
+  round(1/(1+exp(-x)))
+}
+n <- 2000; p <- 3
+beta <- -0.5
+X <- matrix(rnorm(n*p), n, p)
+W <- rbinom(n, 1, 0.5)
+Y <- rl(pmax(beta+X[,1], 0) * W + X[,2])
+p1 <- 1/(1+exp(-(beta+X[,1])))
+plue <- plUpliftEval(W, Y, p1)
+pl_plot(plue,
+        show_practical_max = TRUE,
+        show_theoretical_max = TRUE,
+        show_no_dogs = TRUE,
+        n_bins=20)
+
 \donttest{
-
-
+library(grf)
 set.seed(123)
 
 rl <- function(x){
   round(1/(1+exp(-x)))
 }
-n = 2000; p = 10
-X = matrix(rnorm(n*p), n, p)
-W = rbinom(n, 1, 0.2)
-Y = rl(rl(X[,1]) * W - rl(X[,3]) * W + rnorm(n))
-tau.forest = causal_forest(X, Y, W)
-tau.hat = predict(tau.forest, X)
-plue = plUpliftEval(W, Y, tau.hat$predictions)
+n <- 2000; p <- 10
+X <- matrix(rnorm(n*p), n, p)
+W <- rbinom(n, 1, 0.2)
+Y <- rl(rl(X[,1]) * W - rl(X[,3]) * W + rnorm(n))
+tau.forest <- causal_forest(X, Y, W)
+tau.hat <- predict(tau.forest, X)
+plue <- plUpliftEval(W, Y, tau.hat$predictions)
 plue
 pl_plot(plue,
         show_practical_max = TRUE,
