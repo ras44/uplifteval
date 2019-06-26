@@ -1,7 +1,7 @@
 Package: uplifteval
 Type: Package
 Title: Uplift Model Evaluation with Plots and Metrics
-Version: 0.1.0
+Version: 0.1.0.9000
 Author: Roland Stevenson
 Maintainer: Roland Stevenson <roland@rmg-services.com>
 Description: Provides a variety of plots and metrics to evaluate
