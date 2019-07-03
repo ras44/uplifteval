@@ -46,7 +46,7 @@ plot_uplift(tau.hat$predictions, W, Y)
 ```
 
 ## Contributions
-Feedback and contributions are welcome.  Please submit an issue.
+Feedback and contributions are welcome.  Please submit an [issue](https://github.com/ras44/uplifteval/issues).
 
 ## To-do
 - when comparing two models, score ranges might be different, consider offering depth option
