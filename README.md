@@ -1,4 +1,6 @@
 # uplifteval
+[![](https://www.r-pkg.org/badges/version/uplifteval?color=orange)](https://cran.r-project.org/package=uplifteval)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/uplifteval?color=green)](https://cran.r-project.org/package=uplifteval)
 
 ## Description
 `uplifteval` provides a variety of plots and metrics to evaluate the predictions of uplift models for both binary and continuous outcomes.  Naming conventions are somewhat inconsistent due to the mix of packages that have been ported into this package.
