@@ -15,6 +15,8 @@ Included with the package are:
 
 
 ## Examples
+Please see the [vignettes](https://github.com/ras44/uplifteval/tree/master/vignettes) for examples of each uplift plot option.
+
 Below is an example using the grf package to estimate uplift via a causal forest.  We then plot the results using three methods: the uplift package, the port of the pylift plot, and an alternative uplift plot. 
 ```
 set.seed(123)
